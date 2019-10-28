@@ -11,9 +11,14 @@ export { default as PicturesWall } from './cpicturewall';
 export { default as SearchInput } from './csearchinput';
 export { default as SelectItem } from './cselectitem';
 export { default as SelectTree } from './cselecttree';
-export { default as DetailModal } from './csidemenu';
+export { default as SideTree } from './csidemenu';
 export { default as SideTable } from './csidetable';
 export { default as SingleTable } from './csingletable';
 export { default as CustStandardTable } from './ctable';
 export { default as TextQuill } from './ctext';
 export { default as ImageUpload } from './cuploadimage';
+
+export { http,downLoadFile,httpDict,httpRequest,httpReducer,createRootReducer } from './redux/reducers';
+export { refresh } from './redux/refresh';
+export { default as store } from './redux/store';
+export { getMangerToken,setMangerToken,removeMangerToken,getVersion,getVersionHeardParam,getDefaultPaging,getDefaultPagingSize,getFormNameByPattern,getJSONData,converString2Array,getFormNameLength,getUploadInfo,checkDataResultWithNotification,cutString } from './utils';

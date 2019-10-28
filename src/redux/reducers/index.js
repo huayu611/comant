@@ -157,6 +157,10 @@ export function http(action) {
                     {
                         message.error(msg);
                     }
+                    else
+                    {
+                        message.error('网络异常');
+                    }
                   
                 }
                 else {
@@ -228,7 +232,15 @@ export function httpDict(key,refresh = false,name){
             if (error.response) {
                 if (!!error.response.data) {
                     let msg = error.response.data.msg;
-                    message.error(msg);
+                    if(!!msg && msg !== '')
+                    {
+                        message.error(msg);
+                    }
+                    else
+                    {
+                        message.error('网络异常');
+                    }
+                   
                 }
                 else {
                     message.error('网络异常');

@@ -36,10 +36,10 @@ class SelectItem extends PureComponent {
     const { options, value,disabled,mode } = this.props;
     let mul = !!mode && mode === 'multiple';
     return (
-      mul?<Select showSearch={true} mode="multiple" disabled={disabled} placeholder="请选择" key={value} value={value} onChange={this.onMulSelectChange} style={{ width: '160px' }}>
+      mul?<Select showSearch={true} mode="multiple" disabled={disabled} placeholder="请选择" key={value} value={value} onChange={this.onMulSelectChange} style={{ width: '100%' }}>
         {this.renderItem(options)}
       </Select>
-      :<Select showSearch={true}  disabled={disabled} placeholder="请选择" key={value} value={value} onSelect={this.selectChange} style={{ width: '160px' }}>
+      :<Select showSearch={true}  disabled={disabled} placeholder="请选择" key={value} value={value} onSelect={this.selectChange} style={{ width: '100%' }}>
       {this.renderItem(options)}
     </Select>
     );

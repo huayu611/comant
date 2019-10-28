@@ -1,10 +1,11 @@
 import React, { Component, PureComponent, Fragment } from 'react';
 import { Menu, Item, Separator, Submenu, MenuProvider } from 'react-contexify';
 import { Tree, Icon, Modal, Dropdown, Form, Button, Input } from 'antd';
-import { checkDataResultWithNotification,getUploadInfo } from "../utils"
+import { checkDataResultWithNotification } from "../utils"
 import SelectTree from '../cselecttree';
 import 'react-contexify/dist/ReactContexify.min.css';
 import ImageUpload from '../cuploadimage'
+import { getUploadInfo } from '../utils';
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode;
 
@@ -53,7 +54,6 @@ class DetailModal extends PureComponent {
         const { form, current, addFlag, catalogs, pname, pcode, pparent } = this.props;
         let currentName = current[pname];
         let dis = true;
-        console.log(current);
         if (addFlag) {
             currentName = "";
             dis = false;
@@ -149,7 +149,6 @@ class SideTree extends PureComponent {
     }
 
     handleUpdate = (code, name, parent) => {
-        console.log(parent);
         const { update, add } = this.props;
         const { addFlag } = this.state;
         const _this = this;
@@ -210,7 +209,6 @@ class SideTree extends PureComponent {
     }
 
     updateTreeNode = (sonNode, targetNode) => {
-        console.log(sonNode, targetNode);
         const { dispatch } = this.props;
         let newCatalogInfo = {
             parentMenuCode: targetNode,

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { Menu, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import store from '../redux/store';
+import ThirdPartySVG from "../svg/menu/thirdparty.svg";
+import CustomerSVG from "../svg/menu/customer.svg";
 export default class NavigationMenu extends PureComponent {
 
     static propTypes = {
@@ -31,19 +33,34 @@ export default class NavigationMenu extends PureComponent {
         onClick: () => { },
     };
 
-    renderTitle = (icon,name) => {
+    renderIcon = (icon) => {
+        if (icon === 'thirdparty') {
+            return <Icon component={ThirdPartySVG} />
+        }
+        else if (icon === 'customer') {
+            return <Icon component={CustomerSVG} />
+        }
+        else {
+            return <Icon type={icon} />
+        }
+    }
 
-        return !!icon?<span>
-            <Icon type={icon} />
+    renderTitle = (icon, name) => {
+
+        if (!!icon) {
+
+        }
+        return !!icon ? <span>
+            {this.renderIcon(icon)}
             <span>{name}</span>
-        </span>: <span>{name}</span>;
+        </span> : <span>{name}</span>;
     }
     renderTreeNode = data => {
         if (!data) {
             return [];
         }
-        const { menuItemStyle, keyProp, nameProp, urlProp,iconProp } = this.props;
- 
+        const { menuItemStyle, keyProp, nameProp, urlProp, iconProp } = this.props;
+
         let childTree = data.children
         let sonTreeNode = [];
         if (!!childTree) {
@@ -53,19 +70,19 @@ export default class NavigationMenu extends PureComponent {
         }
         if (!!data.children) {
             return [
-                <Menu.SubMenu key={data[keyProp]} title={this.renderTitle(data[iconProp],data[nameProp])} >
+                <Menu.SubMenu key={data[keyProp]} title={this.renderTitle(data[iconProp], data[nameProp])} >
                     {sonTreeNode}
                 </Menu.SubMenu>
             ]
         }
         else {
-     
+
             return [
                 <Menu.Item
                     key={data[keyProp]}
                     style={menuItemStyle}
                     onClick={() => this.clickMenu(data)}
-                    title={data[nameProp]} 
+                    title={data[nameProp]}
                     value={data[keyProp]}
                     key={data[keyProp]}
                     code={data[keyProp]}>
@@ -114,7 +131,7 @@ export default class NavigationMenu extends PureComponent {
                 mode="inline"
                 theme="dark"
                 style={menuStyle} >
-                
+
                 {this.renderTree(dataSource)}
             </Menu>
         )

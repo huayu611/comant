@@ -1,6 +1,6 @@
 import { PureComponent } from "react";
 import ReactQuill,{Quill} from 'react-quill';
-import "./quill.easy.css";
+
 
 const modules = {
     toolbar: [

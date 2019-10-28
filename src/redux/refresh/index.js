@@ -9,7 +9,6 @@ export function refresh(history){
 function getCurrentMenu(history)
 {
     let pathName = history.location.pathname;
-    console.log(pathName);
     const { CURRENT_MENU } = store.getState();
     if(!!CURRENT_MENU)
     {
@@ -33,11 +32,16 @@ function getCurrentMenu(history)
 }
 
 function getCurrentUser(history){
-    const { CURRENT_USER } = store.getState();
-    if(!!CURRENT_USER)
+    const { CURRENT_USER_REFRESH } = store.getState();
+    if(!!CURRENT_USER_REFRESH && CURRENT_USER_REFRESH === "1")
     {
         return;
     }
+    store.dispatch({
+        type: 'CHANGE',
+        name: 'CURRENT_USER_REFRESH',
+        value: "1"
+    })
     let managerToken = getMangerToken();
     if(!managerToken || '' ===managerToken)
     {
