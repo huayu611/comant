@@ -236,7 +236,7 @@ class SideTree extends PureComponent {
 
         let catalogSonTree = data.children;
         let sonTreeNode = [];
-        if (!!catalogSonTree) {
+        if (!!catalogSonTree && Array.isArray(catalogSonTree)) {
 
             catalogSonTree.forEach(element => {
                 sonTreeNode.push(this.renderTreeNode(element));

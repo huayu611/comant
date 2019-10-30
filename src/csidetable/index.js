@@ -103,7 +103,7 @@ class SideTable extends PureComponent {
             maskClosable={false}
 
         >
-            <Descriptions key="key" style={{ marginBottom: 24 }} column={1}>
+            <Descriptions key="key" style={{ marginBottom: 24 }} column={1} bordered>
                 {description}
             </Descriptions>
 
@@ -230,8 +230,14 @@ class SideTable extends PureComponent {
     }
 
     renderOperatorClumn = (columns) => {
-        const { view } = this.props;
+        const { view, num } = this.props;
         let returnColumn = [];
+        if (!!num) {
+            returnColumn.push({
+                title: '序号',
+                dataIndex: num,
+            })
+        }
         returnColumn.push({
             title: '键值',
             dataIndex: view,
@@ -348,7 +354,7 @@ class SideTable extends PureComponent {
                     rowClassName="sidetable"
                     onRow={(record, index) => {
                         return {
-                            onClick: event => this.onRow(record, index), 
+                            onClick: event => this.onRow(record, index),
                         };
                     }}
                 />

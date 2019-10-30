@@ -20,6 +20,7 @@ export function http(action) {
     let keyname =  action.keyname || 'code';
     let operator = action.operator;
     let cache = action.cache;
+    let doNotNeed =  action.noNeedResult;
 
     if ('' === url || '' === method) {
         console.warn("Http request parameter error ");
@@ -37,114 +38,115 @@ export function http(action) {
  
     return dispatch => {
         return httpRequest(url, method, params, data).then(response => {
-            if(!operator || '' === operator)
+            if(!doNotNeed)
             {
-                if( child !== '')
+                if(!operator || '' === operator)
                 {
-                    dispatch({ type: 'CHANGE', name: name, value: response.data[child] });
+                    if( child !== '')
+                    {
+                        dispatch({ type: 'CHANGE', name: name, value: response.data[child] });
+                    }
+                    else{
+                        dispatch({ type: 'CHANGE', name: name, value: response.data });
+                    }
                 }
-                else{
-                    dispatch({ type: 'CHANGE', name: name, value: response.data });
+                else 
+                {
+                    if(!!oldData)
+                    {
+                        if(operator === 'push')
+                        {
+                            let oldDataArr =  child !== ''?oldData[child]:oldData;
+                            if(!oldDataArr)
+                            {
+                                oldDataArr = [];
+                            }
+                            if( child !== '')
+                            {
+                                let returnData = response.data.data;
+                                oldDataArr.push(returnData);
+                                oldData[child]=oldDataArr;
+                       
+                                dispatch({ type: 'CHANGE', name: name, value: oldData });
+                            }
+                            else{
+                                let returnData = response.data;
+                                 oldDataArr.push(returnData);
+                                dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
+                            }
+                        }
+                        else if(operator === 'deduct')
+                        { 
+                            let oldDataArr =  child !== ''?oldData[child]:oldData;
+                            let dataResponse = getJSONData(response.data);
+                            if (!!dataResponse && !!dataResponse.code && dataResponse.code === "0") {
+                              let keys = converString2Array(dataResponse.data, ",");
+                              let deleteKeys = [];
+                              for (let h = 0; h < keys.length; h++) {
+                                let indexArr = oldDataArr.findIndex((value, index, arr) => { return value[keyname] == keys[h] });
+                                deleteKeys.push(indexArr);
+                              }
+                              for (let hk = 0; hk < deleteKeys.length; hk++) {
+                                if (deleteKeys[hk] === -1) {
+                                  continue;
+                                }
+                                oldDataArr.splice(deleteKeys[hk], 1);
+                              }
+                              if(!!child && child !== '')
+                              {
+                                 oldData[child] = oldDataArr;
+                        
+                                 dispatch({ type: 'CHANGE', name: name, value:oldData});
+                              }
+                              else
+                              {
+                           
+                                dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
+                              }
+                            
+                            }
+                        }
+                        else if(operator === 'update')
+                        {
+                           
+                            let oldDataArr =  (child !== '')?oldData[child]:oldData;
+                            if(!oldDataArr)
+                            {
+                                oldDataArr = [];
+                            }
+                            if (!!response && !!response.data) {
+                              let newData = response.data.data;
+                              for (let i = 0; i < oldDataArr.length; i++) {
+                                  
+                                if (oldDataArr[i][keyname] === newData[keyname]) {
+                                    oldDataArr[i] = newData;
+                                }
+                              }
+                            }
+                       
+                            if(!!child && child !== '')
+                            {
+                            
+                               oldData[child] = oldDataArr;
+                               dispatch({ type: 'CHANGE', name: name, value:oldData});
+                
+                            }
+                            else
+                            {
+                              dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
+                            }
+                           
+                        }
+                 
+                      
+                    }
+                    else
+                    {
+                        dispatch({ type: 'CHANGE', name: name, value:  child !== ''?response.data.data:esponse.data });
+                    }
+                   
                 }
             }
-            else 
-            {
-                if(!!oldData)
-                {
-                    if(operator === 'push')
-                    {
-                        let oldDataArr =  child !== ''?oldData[child]:oldData;
-                        if(!oldDataArr)
-                        {
-                            oldDataArr = [];
-                        }
-                        if( child !== '')
-                        {
-                            let returnData = response.data.data;
-                            oldDataArr.push(returnData);
-                            oldData[child]=oldDataArr;
-                   
-                            dispatch({ type: 'CHANGE', name: name, value: oldData });
-                        }
-                        else{
-                            let returnData = response.data;
-                             oldDataArr.push(returnData);
-                            dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
-                        }
-                    }
-                    else if(operator === 'deduct')
-                    { 
-                        let oldDataArr =  child !== ''?oldData[child]:oldData;
-                        let dataResponse = getJSONData(response.data);
-                        if (!!dataResponse && !!dataResponse.code && dataResponse.code === "0") {
-                          let keys = converString2Array(dataResponse.data, ",");
-                          let deleteKeys = [];
-                          for (let h = 0; h < keys.length; h++) {
-                            let indexArr = oldDataArr.findIndex((value, index, arr) => { return value[keyname] == keys[h] });
-                            deleteKeys.push(indexArr);
-                          }
-                          for (let hk = 0; hk < deleteKeys.length; hk++) {
-                            if (deleteKeys[hk] === -1) {
-                              continue;
-                            }
-                            oldDataArr.splice(deleteKeys[hk], 1);
-                          }
-                          if(!!child && child !== '')
-                          {
-                             oldData[child] = oldDataArr;
-                    
-                             dispatch({ type: 'CHANGE', name: name, value:oldData});
-                          }
-                          else
-                          {
-                       
-                            dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
-                          }
-                        
-                        }
-                    }
-                    else if(operator === 'update')
-                    {
-                       
-                        let oldDataArr =  (child !== '')?oldData[child]:oldData;
-                        if(!oldDataArr)
-                        {
-                            oldDataArr = [];
-                        }
-                        if (!!response && !!response.data) {
-                          let newData = response.data.data;
-                          for (let i = 0; i < oldDataArr.length; i++) {
-                              
-                            if (oldDataArr[i][keyname] === newData[keyname]) {
-                                oldDataArr[i] = newData;
-                            }
-                          }
-                        }
-                   
-                        if(!!child && child !== '')
-                        {
-                        
-                           oldData[child] = oldDataArr;
-                           dispatch({ type: 'CHANGE', name: name, value:oldData});
-            
-                        }
-                        else
-                        {
-                          dispatch({ type: 'CHANGE', name: name, value:oldDataArr});
-                        }
-                       
-                    }
-             
-                  
-                }
-                else
-                {
-                    dispatch({ type: 'CHANGE', name: name, value:  child !== ''?response.data.data:esponse.data });
-                }
-               
-            }
-          
-          
             if (!!callback) {
                 callback(response.data);
             }

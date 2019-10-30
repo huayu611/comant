@@ -78,12 +78,26 @@ export function getUploadInfo(type) {
   return uploadAvatar;
 }
 
-export function checkDataResultWithNotification(data, callback) {
+export function checkDataResultWithNotification(data) {
 
 
   return new Promise(function (resolve, reject) {
     if (!!data.code && data.code === '0' && !!data.msg) {
       message.success(data.msg);
+      resolve(data);
+    }
+    else {
+      reject(data);
+    }
+  });
+
+}
+
+export function checkDataResult(data) {
+
+
+  return new Promise(function (resolve, reject) {
+    if (!!data.code && data.code === '0' && !!data.msg) {
       resolve(data);
     }
     else {

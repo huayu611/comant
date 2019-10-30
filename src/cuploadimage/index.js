@@ -1,6 +1,5 @@
 import React, { PureComponent, Fragment } from "react";
 import { Avatar, Upload, Button, Dropdown, Menu, Icon, Input, Tooltip } from 'antd';
-import PropTypes from 'prop-types';
 const Search = Input.Search;
 export default class ImageUpload extends PureComponent {
     state = {
