@@ -1,6 +1,6 @@
 {
   "name": "comant",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "title": "Component for Ant",
   "description": "",
   "main": "./lib/index.js",
